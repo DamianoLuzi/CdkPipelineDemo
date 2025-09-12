@@ -1,16 +1,71 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import { CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelines';
 
-export class DemoPipelineStack extends cdk.Stack {
+export class CdkPipelineStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
+    const pipeline = new CodePipeline(this,"Pipeline", {
+      pipelineName: 'DemoCodePipeline',
+      synth: new ShellStep('Synth', {
+        input: CodePipelineSource.connection(
+          'DamianoLuzi/CdkPipelineDemo','main',{
+            connectionArn: 'arn:aws:codeconnections:us-east-1:718579638605:connection/500ced3a-c591-4bad-9545-b6d2b66de1c3',
+            triggerOnPush: true
+          }
+        ),
+        commands: [
+          'npm ci',
+          'npm run build',
+          'npx cdk synth',
+        ],
+      }),
+      //crossAccountKeys: true, // cross-account deployments
+    });
 
-    // example resource
-    // const queue = new sqs.Queue(this, 'DemoPipelineQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
+    // const devStage =  new PipelineStage(this, 'DEV', {env: { account: '799201157016', region: 'eu-west-3' }});
+
+    // pipeline.addStage(devStage, {
+    //   pre: [
+    //     new ShellStep('UnitTests', {
+    //       commands: [
+    //         'npm ci',
+    //         'npm test',
+    //       ],
+    //     }),
+    //   ],
     // });
-  }
+
+  //   const stgStage = new PipelineStage(this, 'STG', {env: { account: '351323459405', region: 'eu-central-1' }})
+  //   const communityHubStack = stgStage.node.tryFindChild('CommunityHubStack') as CommunityHubStack;
+
+  //   pipeline.addStage(stgStage, {
+  //     post: [
+  //       new ShellStep('RunIntegrationTests', {
+  //         commands: [
+  //         'echo "Testing REST API..."',
+  //         'curl -Ssf $POSTS_API_URL/posts || exit 1',
+  //         'echo "Testing WebSocket API..."',
+  //         'npm ci',
+  //         'npx ts-node test/test.websocket.ts $CHAT_API_URL || exit 1', 
+  //         ],
+  //         envFromCfnOutputs: {
+  //             POSTS_API_URL: communityHubStack.node.tryFindChild('PostsApiUrl') as cdk.CfnOutput,
+  //             CHAT_API_URL: communityHubStack.node.tryFindChild('ChatApiUrl') as cdk.CfnOutput,
+  //         },
+  //       })
+  //     ],
+  //  });
+  /*
+  const prdWave = pipeline.addWave('PRD')
+  prdWave.addStage(
+    new PipelineStage(
+      this, 'PRD-NV', {env: { account: '718579638605', region: 'us-east-1' }})
+  );
+    prdWave.addStage(
+    new PipelineStage(
+      this, 'DR-NV', {env: { account: '718579638605', region: 'us-east-1' }})
+  ); */
+}
 }
