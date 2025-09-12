@@ -21,51 +21,6 @@ export class CdkPipelineStack extends cdk.Stack {
           'npx cdk synth',
         ],
       }),
-      //crossAccountKeys: true, // cross-account deployments
     });
-
-    // const devStage =  new PipelineStage(this, 'DEV', {env: { account: '799201157016', region: 'eu-west-3' }});
-
-    // pipeline.addStage(devStage, {
-    //   pre: [
-    //     new ShellStep('UnitTests', {
-    //       commands: [
-    //         'npm ci',
-    //         'npm test',
-    //       ],
-    //     }),
-    //   ],
-    // });
-
-  //   const stgStage = new PipelineStage(this, 'STG', {env: { account: '351323459405', region: 'eu-central-1' }})
-  //   const communityHubStack = stgStage.node.tryFindChild('CommunityHubStack') as CommunityHubStack;
-
-  //   pipeline.addStage(stgStage, {
-  //     post: [
-  //       new ShellStep('RunIntegrationTests', {
-  //         commands: [
-  //         'echo "Testing REST API..."',
-  //         'curl -Ssf $POSTS_API_URL/posts || exit 1',
-  //         'echo "Testing WebSocket API..."',
-  //         'npm ci',
-  //         'npx ts-node test/test.websocket.ts $CHAT_API_URL || exit 1', 
-  //         ],
-  //         envFromCfnOutputs: {
-  //             POSTS_API_URL: communityHubStack.node.tryFindChild('PostsApiUrl') as cdk.CfnOutput,
-  //             CHAT_API_URL: communityHubStack.node.tryFindChild('ChatApiUrl') as cdk.CfnOutput,
-  //         },
-  //       })
-  //     ],
-  //  });
-  /*
-  const prdWave = pipeline.addWave('PRD')
-  prdWave.addStage(
-    new PipelineStage(
-      this, 'PRD-NV', {env: { account: '718579638605', region: 'us-east-1' }})
-  );
-    prdWave.addStage(
-    new PipelineStage(
-      this, 'DR-NV', {env: { account: '718579638605', region: 'us-east-1' }})
-  ); */
 }
 }
