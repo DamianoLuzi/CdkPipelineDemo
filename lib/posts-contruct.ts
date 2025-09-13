@@ -7,7 +7,7 @@ import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as events from 'aws-cdk-lib/aws-events';
 import * as pipes from 'aws-cdk-lib/aws-pipes';
-import path from 'path';
+import * as path from 'path';
 
 interface CdkPostsConstructProps extends cdk.StackProps {
   eventBus: events.EventBus;

@@ -24,10 +24,18 @@ export class CdkPipelineStack extends cdk.Stack {
       }),
       crossAccountKeys: true
     });
-    //const devStage =  new PipelineStage(this, 'DEV', {env: { account: '799201157016', region: 'eu-west-3' }});
+    
+    const devStage =  new PipelineStage(this, 'DEV', {env: { account: '799201157016', region: 'eu-west-3' }});
 
-    pipeline.addStage(
-      new PipelineStage(this, 'DEV', {env: { account: '799201157016', region: 'eu-west-3' }})
-    );
+    pipeline.addStage(devStage, {
+      pre: [
+        new ShellStep('UnitTests', {
+          commands: [
+            'npm ci',
+            'npm test',
+          ],
+        }),
+      ],
+    });
 }
 }
