@@ -11,7 +11,7 @@ describe('CdkChatConstruct', () => {
 
     const eventBus = new events.EventBus(stack, 'AnalyticsBus');
 
-    new CdkChatConstruct(stack, 'ChatConstruct', { eventBus });
+    new CdkChatConstruct(stack, 'TestChatConstruct', { eventBus });
 
     const template = Template.fromStack(stack);
 
