@@ -1,6 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelines';
+import { PipelineStage } from './pipeline-stage';
 
 export class CdkPipelineStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -21,6 +22,12 @@ export class CdkPipelineStack extends cdk.Stack {
           'npx cdk synth',
         ],
       }),
+      crossAccountKeys: true
     });
+    //const devStage =  new PipelineStage(this, 'DEV', {env: { account: '799201157016', region: 'eu-west-3' }});
+
+    pipeline.addStage(
+      new PipelineStage(this, 'DEV', {env: { account: '799201157016', region: 'eu-west-3' }})
+    );
 }
 }
