@@ -31,21 +31,20 @@ export class CdkChatConstruct extends Construct {
         });
 
         const makeLambda = (id: string, timeoutSec: number) => {
-            const lambdaFn =  new lambda.Function(this, id, {
+            return new lambda.Function(this, id, {
                 runtime: lambda.Runtime.PYTHON_3_13,
                 handler: `handler.lambda_handler`,
                 code: lambda.Code.fromAsset(path.join(__dirname, '..', `lambda/${id}`)),
                 environment: { TABLE_NAME: this.table.tableName },
                 timeout: cdk.Duration.seconds(timeoutSec),
                 architecture: lambda.Architecture.ARM_64,
-                functionName: `${cdk.Stack.of(this).stackName}-${id}`,
+                functionName: `${id}Lambda-${cdk.Stack.of(this).stackName}`,
             });
-            new logs.LogGroup(this, `${id}LogGroup`, {
-                logGroupName: `/aws/lambda/${id}-${cdk.Stack.of(this).stackName}`,
-                removalPolicy: cdk.RemovalPolicy.DESTROY,
-                retention: logs.RetentionDays.ONE_WEEK,
-            });
-            return lambdaFn;
+            // new logs.LogGroup(this, `${id}LogGroup`, {
+            //     logGroupName: `/aws/lambda/${id}-${cdk.Stack.of(this).stackName}`,
+            //     removalPolicy: cdk.RemovalPolicy.DESTROY,
+            //     retention: logs.RetentionDays.ONE_WEEK,
+            // });
         };
 
         this.connectLambda = makeLambda('connect', 10);
