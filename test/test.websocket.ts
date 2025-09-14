@@ -53,10 +53,6 @@
 //   console.error('Sender error:', err);
 //   process.exit(1);
 // });
-
-
-// File: test/test.websocket.ts
-
 import WebSocket from 'ws';
 import process from 'process';
 
@@ -68,61 +64,51 @@ if (!url || !message) {
   process.exit(1);
 }
 
-// Use a timeout to prevent the script from hanging indefinitely
-let timeoutId = setTimeout(() => {
-    console.error('Test timeout: Connections did not close in time.');
+const timeout = 10000;
+const timeoutId = setTimeout(() => {
+    console.error('Test timeout: Did not receive expected result.');
     process.exit(1);
-}, 10000); // 10-second timeout
-
-// An exit function to ensure we always close all connections and clear the timer.
-const exit = (code: number) => {
-    clearTimeout(timeoutId);
-    if (sender.readyState === WebSocket.OPEN) sender.close();
-    if (receiver.readyState === WebSocket.OPEN) receiver.close();
-    process.exit(code);
-};
+}, timeout);
 
 const sender = new WebSocket(url);
 const receiver = new WebSocket(url);
 
+const exitTest = (code: number) => {
+    clearTimeout(timeoutId);
+    sender.close();
+    receiver.close();
+    process.exit(code);
+};
+
 receiver.on('open', () => {
-    console.log('Receiver connected');
+    console.log('Receiver connected.');
 });
 
 receiver.on('message', (data: WebSocket.RawData) => {
     const msg = data.toString();
     console.log('Receiver got message:', msg);
     if (msg.includes(message)) {
-        console.log('Broadcast successful!');
-        exit(0);
+        console.log('Broadcast successful! Test PASSED.');
+        exitTest(0);
     } else {
-        console.error('Test FAILED: Received unexpected message.');
-        exit(1);
+        console.log('Test FAILED: Received unexpected message.');
+        exitTest(1);
     }
-});
-
-receiver.on('close', (code, reason) => {
-    console.log(`Receiver closed with code ${code}`);
 });
 
 receiver.on('error', (err) => {
     console.error('Receiver error:', err);
-    exit(1);
+    exitTest(1);
 });
 
 sender.on('open', () => {
-    console.log('Sender connected');
+    console.log('Sender connected.');
     sender.send(JSON.stringify({ action: 'sendmessage', message: message }));
-    console.log('Sender sent message');
-});
-
-sender.on('close', (code, reason) => {
-    console.log(`Sender closed with code ${code}`);
+    console.log('Sender sent message.');
 });
 
 sender.on('error', (err) => {
     console.error('Sender error:', err);
-    // When the sender gets an error, it's a test failure as the server should not crash.
     console.error('Test FAILED: Sender received an error. The broadcast likely failed.');
-    exit(1);
+    exitTest(1);
 });

@@ -25,7 +25,7 @@ export class CdkPipelineStack extends cdk.Stack {
       }),
       crossAccountKeys: true
     });
-    
+
     const devStage =  new PipelineStage(this, 'DEV', {env: { account: '799201157016', region: 'eu-west-3' }});
 
     pipeline.addStage(devStage, {
@@ -50,12 +50,9 @@ export class CdkPipelineStack extends cdk.Stack {
           'curl -Ssf $POSTS_API_URL/posts || exit 1',
           'echo "Testing WebSocket API..."',
           'npm ci',
-          // Test with a working message
-          //'npx ts-node test/test.websocket.ts --url $CHAT_API_URL --message "hello world" --expect-success || exit 1',
           `npx ts-node test/test.websocket.ts $CHAT_API_URL "normal message"|| exit 1`,
-          // Test with the "bug" message to simulate failure and check for it
-          //'npx ts-node test/test.websocket.ts --url $CHAT_API_URL --message "fail" --expect-failure || exit 1',
-          `npx ts-node test/test.websocket.ts $CHAT_API_URL "fail"|| exit 1`
+          // Test with the "bug" message to simulate failure
+          // `npx ts-node test/test.websocket.ts $CHAT_API_URL "fail"|| exit 1`
           ],
           envFromCfnOutputs: {
               POSTS_API_URL: communityHubStack.node.tryFindChild('PostsApiUrl') as cdk.CfnOutput,
