@@ -2,6 +2,7 @@ import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelines';
 import { PipelineStage } from './pipeline-stage';
+import { CommunityHubStack } from './application-stack';
 
 export class CdkPipelineStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -37,5 +38,31 @@ export class CdkPipelineStack extends cdk.Stack {
         }),
       ],
     });
+
+    const stgStage = new PipelineStage(this, 'STG', {env: { account: '351323459405', region: 'eu-central-1' }})
+    const communityHubStack = stgStage.node.tryFindChild('CommunityHubStack') as CommunityHubStack;
+
+    pipeline.addStage(stgStage, {
+      post: [
+        new ShellStep('RunIntegrationTests', {
+          commands: [
+          'echo "Testing REST API..."',
+          'curl -Ssf $POSTS_API_URL/posts || exit 1',
+          'echo "Testing WebSocket API..."',
+          'npm ci',
+          // Test with a working message
+          //'npx ts-node test/test.websocket.ts --url $CHAT_API_URL --message "hello world" --expect-success || exit 1',
+          `npx ts-node test/test.websocket.ts $CHAT_API_URL "normal message"|| exit 1`,
+          // Test with the "bug" message to simulate failure and check for it
+          //'npx ts-node test/test.websocket.ts --url $CHAT_API_URL --message "fail" --expect-failure || exit 1',
+          `npx ts-node test/test.websocket.ts $CHAT_API_URL "fail"|| exit 1`
+          ],
+          envFromCfnOutputs: {
+              POSTS_API_URL: communityHubStack.node.tryFindChild('PostsApiUrl') as cdk.CfnOutput,
+              CHAT_API_URL: communityHubStack.node.tryFindChild('ChatApiUrl') as cdk.CfnOutput,
+          },
+        })
+      ],
+   });
 }
 }

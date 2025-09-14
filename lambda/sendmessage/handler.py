@@ -12,6 +12,12 @@ dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table(os.environ['TABLE_NAME'])
 
 def send_message(apigw, connection_id, message_data):
+    # --- START OF DELIBERATE BUG ---
+    # If message contains "fail", simulate a runtime failure.
+    if "fail" in message_data.lower():
+        raise ValueError("Deliberate crash initiated by user message.")
+    # --- END OF DELIBERATE BUG ---
+
     try:
         apigw.post_to_connection(
             ConnectionId=connection_id,
