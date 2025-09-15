@@ -23,21 +23,21 @@ export class CdkPipelineStack extends cdk.Stack {
           'npx cdk synth',
         ],
       }),
-      //crossAccountKeys: true
+      crossAccountKeys: true
     });
 
-  //   const devStage =  new PipelineStage(this, 'DEV', {env: { account: '799201157016', region: 'eu-west-3' }});
+    const devStage =  new PipelineStage(this, 'DEV', {env: { account: '799201157016', region: 'eu-west-3' }});
 
-  //   pipeline.addStage(devStage, {
-  //     pre: [
-  //       new ShellStep('UnitTests', {
-  //         commands: [
-  //           'npm ci',
-  //           'npm test',
-  //         ],
-  //       }),
-  //     ],
-  //   });
+    pipeline.addStage(devStage, {
+      pre: [
+        new ShellStep('UnitTests', {
+          commands: [
+            'npm ci',
+            'npm test',
+          ],
+        }),
+      ],
+    });
 
   //   const stgStage = new PipelineStage(this, 'STG', {env: { account: '351323459405', region: 'eu-central-1' }})
   //   const communityHubStack = stgStage.node.tryFindChild('CommunityHubStack') as CommunityHubStack;
