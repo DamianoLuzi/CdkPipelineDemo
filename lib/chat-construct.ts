@@ -9,9 +9,9 @@ import * as events from 'aws-cdk-lib/aws-events';
 import * as pipes from 'aws-cdk-lib/aws-pipes';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import * as path from 'path';
-interface CdkChatConstructProps extends cdk.StackProps {
-    eventBus: events.EventBus;
-}
+// interface CdkChatConstructProps extends cdk.StackProps {
+//     eventBus: events.EventBus;
+// }
 export class CdkChatConstruct extends Construct {
 
     public readonly chatApi: apigwv2.WebSocketApi;
@@ -21,7 +21,7 @@ export class CdkChatConstruct extends Construct {
     public readonly connectLambda: lambda.Function;
     public readonly disconnectLambda: lambda.Function;
 
-    constructor(scope: Construct, id: string, props: CdkChatConstructProps) {
+    constructor(scope: Construct, id: string /*, props: CdkChatConstructProps*/) {
         super(scope, id);
 
         this.table = new dynamodb.Table(this, 'ConnectionsTable', {
@@ -93,50 +93,50 @@ export class CdkChatConstruct extends Construct {
         this.sendMessageLambda.addEnvironment('CALLBACK_URL', apiDomain);
 
 
-        const pipeRole = new iam.Role(this, 'ChatStreamPipeRole', {
-            assumedBy: new iam.ServicePrincipal('pipes.amazonaws.com'),
-            inlinePolicies: {
-                PipePolicy: new iam.PolicyDocument({
-                    statements: [
-                        new iam.PolicyStatement({
-                            effect: iam.Effect.ALLOW,
-                            actions: [
-                                'dynamodb:DescribeStream',
-                                'dynamodb:GetRecords',
-                                'dynamodb:GetShardIterator',
-                                'dynamodb:ListStreams',
-                            ],
-                            resources: [this.table.tableStreamArn!],
-                        }),
-                        new iam.PolicyStatement({
-                            effect: iam.Effect.ALLOW,
-                            actions: ['events:PutEvents'],
-                            resources: [props.eventBus.eventBusArn],
-                        }),
-                    ],
-                }),
-            },
-        });
+        // const pipeRole = new iam.Role(this, 'ChatStreamPipeRole', {
+        //     assumedBy: new iam.ServicePrincipal('pipes.amazonaws.com'),
+        //     inlinePolicies: {
+        //         PipePolicy: new iam.PolicyDocument({
+        //             statements: [
+        //                 new iam.PolicyStatement({
+        //                     effect: iam.Effect.ALLOW,
+        //                     actions: [
+        //                         'dynamodb:DescribeStream',
+        //                         'dynamodb:GetRecords',
+        //                         'dynamodb:GetShardIterator',
+        //                         'dynamodb:ListStreams',
+        //                     ],
+        //                     resources: [this.table.tableStreamArn!],
+        //                 }),
+        //                 new iam.PolicyStatement({
+        //                     effect: iam.Effect.ALLOW,
+        //                     actions: ['events:PutEvents'],
+        //                     resources: [props.eventBus.eventBusArn],
+        //                 }),
+        //             ],
+        //         }),
+        //     },
+        // });
 
-        new pipes.CfnPipe(this, 'ChatStreamPipe', {
-            name: `${cdk.Stack.of(this).stackName}-chat-stream-pipe`,
-            roleArn: pipeRole.roleArn,
-            source: this.table.tableStreamArn!,
-            target: props.eventBus.eventBusArn,
-            sourceParameters: {
-                dynamoDbStreamParameters: {
-                    startingPosition: 'LATEST',
-                    batchSize: 10,
-                    maximumBatchingWindowInSeconds: 5,
-                },
-            },
-            targetParameters: {
-                eventBridgeEventBusParameters: {
-                    detailType: 'DynamoDB Stream Record',
-                    source: 'chat.service',
-                },
-            },
-        });
+        // new pipes.CfnPipe(this, 'ChatStreamPipe', {
+        //     name: `${cdk.Stack.of(this).stackName}-chat-stream-pipe`,
+        //     roleArn: pipeRole.roleArn,
+        //     source: this.table.tableStreamArn!,
+        //     target: props.eventBus.eventBusArn,
+        //     sourceParameters: {
+        //         dynamoDbStreamParameters: {
+        //             startingPosition: 'LATEST',
+        //             batchSize: 10,
+        //             maximumBatchingWindowInSeconds: 5,
+        //         },
+        //     },
+        //     targetParameters: {
+        //         eventBridgeEventBusParameters: {
+        //             detailType: 'DynamoDB Stream Record',
+        //             source: 'chat.service',
+        //         },
+        //     },
+        // });
     }
 }
 

@@ -7,7 +7,7 @@ const app = new App();
 const stack = new Stack(app, 'ChatStack'); 
 
 const analytics = new CdkAnalyticsConstruct(stack, 'AnalyticsConstruct'); 
-const chat = new CdkChatConstruct(stack, 'ChatConstruct', { eventBus: analytics.eventBus, }); 
+const chat = new CdkChatConstruct(stack, 'ChatConstruct', /*{ eventBus: analytics.eventBus, }*/); 
 
 const integ = new IntegTest(app, 'ChatIntegTest', { testCases: [stack], }); 
 

@@ -11,7 +11,7 @@ describe('CdkChatConstruct', () => {
 
     const eventBus = new events.EventBus(stack, 'AnalyticsBus');
 
-    new CdkChatConstruct(stack, 'TestChatConstruct', { eventBus });
+    new CdkChatConstruct(stack, 'TestChatConstruct'/*, { eventBus }*/);
 
     const template = Template.fromStack(stack);
 
@@ -24,7 +24,7 @@ describe('CdkChatConstruct', () => {
     template.resourceCountIs('AWS::Lambda::Function', 3);
     template.resourceCountIs('AWS::ApiGatewayV2::Api', 1);
     template.resourceCountIs('AWS::ApiGatewayV2::Stage', 1);
-    template.resourceCountIs('AWS::Pipes::Pipe', 1);
+    //template.resourceCountIs('AWS::Pipes::Pipe', 1);
 
     template.hasResourceProperties('AWS::Lambda::Function', {
       Environment: Match.objectLike({

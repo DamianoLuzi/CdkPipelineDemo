@@ -2,7 +2,7 @@ import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelines';
 import { PipelineStage } from './pipeline-stage';
-import { CommunityHubStack } from './application-stack';
+import { AppStack } from './application-stack';
 
 export class CdkPipelineStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -40,7 +40,7 @@ export class CdkPipelineStack extends cdk.Stack {
     });
 
   //   const stgStage = new PipelineStage(this, 'STG', {env: { account: '351323459405', region: 'eu-central-1' }})
-  //   const communityHubStack = stgStage.node.tryFindChild('CommunityHubStack') as CommunityHubStack;
+  //   const appStack = stgStage.node.tryFindChild('CommunityHubStack') as AppStack;
 
   //   pipeline.addStage(stgStage, {
   //     post: [
@@ -55,8 +55,8 @@ export class CdkPipelineStack extends cdk.Stack {
   //         // `npx ts-node test/test.websocket.ts $CHAT_API_URL "fail"|| exit 1`
   //         ],
   //         envFromCfnOutputs: {
-  //             POSTS_API_URL: communityHubStack.node.tryFindChild('PostsApiUrl') as cdk.CfnOutput,
-  //             CHAT_API_URL: communityHubStack.node.tryFindChild('ChatApiUrl') as cdk.CfnOutput,
+  //             POSTS_API_URL: appStack.node.tryFindChild('PostsApiUrl') as cdk.CfnOutput,
+  //             CHAT_API_URL: appStack.node.tryFindChild('ChatApiUrl') as cdk.CfnOutput,
   //         },
   //       })
   //     ],
