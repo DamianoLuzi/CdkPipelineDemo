@@ -39,27 +39,23 @@ export class CdkPipelineStack extends cdk.Stack {
       ],
     });
 
-  //   const stgStage = new PipelineStage(this, 'STG', {env: { account: '351323459405', region: 'eu-central-1' }})
-  //   const appStack = stgStage.node.tryFindChild('CommunityHubStack') as AppStack;
+  const stgStage = new PipelineStage(this, 'STG', {env: { account: '351323459405', region: 'eu-central-1' }})
 
-  //   pipeline.addStage(stgStage, {
-  //     post: [
-  //       new ShellStep('RunIntegrationTests', {
-  //         commands: [
-  //         'echo "Testing REST API..."',
-  //         'curl -Ssf $POSTS_API_URL/posts || exit 1',
-  //         'echo "Testing WebSocket API..."',
-  //         'npm ci',
-  //         `npx ts-node test/test.websocket.ts $CHAT_API_URL "normal message"|| exit 1`,
-  //         // Test with the "bug" message to simulate failure
-  //         // `npx ts-node test/test.websocket.ts $CHAT_API_URL "fail"|| exit 1`
-  //         ],
-  //         envFromCfnOutputs: {
-  //             POSTS_API_URL: appStack.node.tryFindChild('PostsApiUrl') as cdk.CfnOutput,
-  //             CHAT_API_URL: appStack.node.tryFindChild('ChatApiUrl') as cdk.CfnOutput,
-  //         },
-  //       })
-  //     ],
-  //  });
+    pipeline.addStage(stgStage, {
+      post: [
+        new ShellStep('RunIntegrationTests', {
+          commands: [
+          'echo "Testing WebSocket API..."',
+          'npm ci',
+          `npx ts-node test/test.websocket.ts $CHAT_API_URL "test message"|| exit 1`,
+          // Test with the "bug" message to simulate failure
+          // `npx ts-node test/test.websocket.ts $CHAT_API_URL "fail"|| exit 1`
+          ],
+          envFromCfnOutputs: {
+              CHAT_API_URL: stgStage.appUrlOutput
+          },
+        })
+      ],
+   });
 }
 }
