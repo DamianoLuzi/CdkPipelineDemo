@@ -1,0 +1,23 @@
+{
+  "version": "48.0.0",
+  "testCases": {
+    "ChatIntegTest/DefaultTest": {
+      "stacks": [
+        "TestChatStack"
+      ],
+      "regions": [
+        "us-east-1"
+      ],
+      "cdkCommandOptions": {
+        "destroy": {
+          "args": {
+            "force": true
+          }
+        }
+      },
+      "assertionStack": "ChatIntegTest/DefaultTest/DeployAssert",
+      "assertionStackName": "ChatIntegTestDefaultTestDeployAssert9F6FDF47"
+    }
+  },
+  "minimumCliVersion": "2.1029.1"
+}

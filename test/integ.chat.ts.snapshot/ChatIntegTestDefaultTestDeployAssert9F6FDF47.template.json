@@ -1,0 +1,1048 @@
+{
+ "Resources": {
+  "LambdaInvoke97846e0dd1b217e34044e12fc9f5f495": {
+   "Type": "Custom::DeployAssert@SdkCallLambdainvoke",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "SingletonFunction1488541a7b23466481b69b4408076b81HandlerCD40AE9F",
+      "Arn"
+     ]
+    },
+    "service": "Lambda",
+    "api": "invoke",
+    "parameters": {
+     "FunctionName": {
+      "Fn::Join": [
+       "",
+       [
+        "\"",
+        {
+         "Fn::ImportValue": "TestChatStack:ExportsOutputRefChatConstructconnect4B5073AB960E50A6"
+        },
+        "\""
+       ]
+      ]
+     },
+     "Payload": "\"{\\\"requestContext\\\":{\\\"connectionId\\\":\\\"test-conn-1-1758465913644\\\",\\\"routeKey\\\":\\\"$connect\\\"}}\""
+    },
+    "flattenResponse": "false",
+    "salt": "1758465913658"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "LambdaInvoke97846e0dd1b217e34044e12fc9f5f495Invoke8774E71C": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "TestChatStack:ExportsOutputRefChatConstructconnect4B5073AB960E50A6"
+    },
+    "Principal": {
+     "Fn::GetAtt": [
+      "SingletonFunction1488541a7b23466481b69b4408076b81Role37ABCE73",
+      "Arn"
+     ]
+    }
+   }
+  },
+  "SingletonFunction1488541a7b23466481b69b4408076b81Role37ABCE73": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ],
+    "Policies": [
+     {
+      "PolicyName": "Inline",
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Action": [
+          "lambda:Invoke"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+          "*"
+         ]
+        },
+        {
+         "Action": [
+          "lambda:InvokeFunction"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+          {
+           "Fn::Join": [
+            "",
+            [
+             "arn:",
+             {
+              "Ref": "AWS::Partition"
+             },
+             ":lambda:",
+             {
+              "Ref": "AWS::Region"
+             },
+             ":",
+             {
+              "Ref": "AWS::AccountId"
+             },
+             ":function:",
+             {
+              "Fn::ImportValue": "TestChatStack:ExportsOutputRefChatConstructconnect4B5073AB960E50A6"
+             }
+            ]
+           ]
+          }
+         ]
+        },
+        {
+         "Action": [
+          "dynamodb:GetItem"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+          "*"
+         ]
+        },
+        {
+         "Action": [
+          "lambda:Invoke"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+          "*"
+         ]
+        },
+        {
+         "Action": [
+          "lambda:InvokeFunction"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+          {
+           "Fn::Join": [
+            "",
+            [
+             "arn:",
+             {
+              "Ref": "AWS::Partition"
+             },
+             ":lambda:",
+             {
+              "Ref": "AWS::Region"
+             },
+             ":",
+             {
+              "Ref": "AWS::AccountId"
+             },
+             ":function:",
+             {
+              "Fn::ImportValue": "TestChatStack:ExportsOutputRefChatConstructconnect4B5073AB960E50A6"
+             }
+            ]
+           ]
+          }
+         ]
+        },
+        {
+         "Action": [
+          "dynamodb:GetItem"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+          "*"
+         ]
+        },
+        {
+         "Action": [
+          "lambda:Invoke"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+          "*"
+         ]
+        },
+        {
+         "Action": [
+          "lambda:InvokeFunction"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+          {
+           "Fn::Join": [
+            "",
+            [
+             "arn:",
+             {
+              "Ref": "AWS::Partition"
+             },
+             ":lambda:",
+             {
+              "Ref": "AWS::Region"
+             },
+             ":",
+             {
+              "Ref": "AWS::AccountId"
+             },
+             ":function:",
+             {
+              "Fn::ImportValue": "TestChatStack:ExportsOutputRefChatConstructsendmessage212CB28F5089776A"
+             }
+            ]
+           ]
+          }
+         ]
+        },
+        {
+         "Action": [
+          "lambda:Invoke"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+          "*"
+         ]
+        },
+        {
+         "Action": [
+          "lambda:InvokeFunction"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+          {
+           "Fn::Join": [
+            "",
+            [
+             "arn:",
+             {
+              "Ref": "AWS::Partition"
+             },
+             ":lambda:",
+             {
+              "Ref": "AWS::Region"
+             },
+             ":",
+             {
+              "Ref": "AWS::AccountId"
+             },
+             ":function:",
+             {
+              "Fn::ImportValue": "TestChatStack:ExportsOutputRefChatConstructdisconnect68AF3F9B851D6E04"
+             }
+            ]
+           ]
+          }
+         ]
+        },
+        {
+         "Action": [
+          "dynamodb:GetItem"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+          "*"
+         ]
+        },
+        {
+         "Action": [
+          "lambda:Invoke"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+          "*"
+         ]
+        },
+        {
+         "Action": [
+          "lambda:InvokeFunction"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+          {
+           "Fn::Join": [
+            "",
+            [
+             "arn:",
+             {
+              "Ref": "AWS::Partition"
+             },
+             ":lambda:",
+             {
+              "Ref": "AWS::Region"
+             },
+             ":",
+             {
+              "Ref": "AWS::AccountId"
+             },
+             ":function:",
+             {
+              "Fn::ImportValue": "TestChatStack:ExportsOutputRefChatConstructdisconnect68AF3F9B851D6E04"
+             }
+            ]
+           ]
+          }
+         ]
+        },
+        {
+         "Action": [
+          "dynamodb:GetItem"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+          "*"
+         ]
+        },
+        {
+         "Action": [
+          "states:StartExecution"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+          "*"
+         ]
+        }
+       ]
+      }
+     }
+    ]
+   }
+  },
+  "SingletonFunction1488541a7b23466481b69b4408076b81HandlerCD40AE9F": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Runtime": "nodejs22.x",
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "4e818c462cf84c112f84262d376efd099d66da03f7a2aabae64c50c0511de276.zip"
+    },
+    "Timeout": 120,
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "SingletonFunction1488541a7b23466481b69b4408076b81Role37ABCE73",
+      "Arn"
+     ]
+    }
+   }
+  },
+  "AwsApiCallDynamoDBgetItem9ee7d488ffee8644994907eaf6a3de59": {
+   "Type": "Custom::DeployAssert@SdkCallDynamoDBgetItem",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "SingletonFunction1488541a7b23466481b69b4408076b81HandlerCD40AE9F",
+      "Arn"
+     ]
+    },
+    "service": "DynamoDB",
+    "api": "getItem",
+    "expected": "{\"$ObjectLike\":{\"Item\":{\"connectionId\":{\"S\":\"test-conn-1-1758465913644\"}}}}",
+    "parameters": {
+     "TableName": {
+      "Fn::Join": [
+       "",
+       [
+        "\"",
+        {
+         "Fn::ImportValue": "TestChatStack:ExportsOutputRefChatConstructConnectionsTableC829605F00D02450"
+        },
+        "\""
+       ]
+      ]
+     },
+     "Key": "{\"connectionId\":{\"S\":\"test-conn-1-1758465913644\"}}",
+     "ConsistentRead": "true"
+    },
+    "flattenResponse": "false",
+    "salt": "1758465913658"
+   },
+   "DependsOn": [
+    "LambdaInvoke97846e0dd1b217e34044e12fc9f5f495",
+    "LambdaInvoke97846e0dd1b217e34044e12fc9f5f495Invoke8774E71C"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "LambdaInvokef516de69dca2935de049b8b5cd679c62": {
+   "Type": "Custom::DeployAssert@SdkCallLambdainvoke",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "SingletonFunction1488541a7b23466481b69b4408076b81HandlerCD40AE9F",
+      "Arn"
+     ]
+    },
+    "service": "Lambda",
+    "api": "invoke",
+    "parameters": {
+     "FunctionName": {
+      "Fn::Join": [
+       "",
+       [
+        "\"",
+        {
+         "Fn::ImportValue": "TestChatStack:ExportsOutputRefChatConstructconnect4B5073AB960E50A6"
+        },
+        "\""
+       ]
+      ]
+     },
+     "Payload": "\"{\\\"requestContext\\\":{\\\"connectionId\\\":\\\"test-conn-2-1758465913644\\\",\\\"routeKey\\\":\\\"$connect\\\"}}\""
+    },
+    "flattenResponse": "false",
+    "salt": "1758465913659"
+   },
+   "DependsOn": [
+    "AwsApiCallDynamoDBgetItem9ee7d488ffee8644994907eaf6a3de59"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "LambdaInvokef516de69dca2935de049b8b5cd679c62Invoke79D2F13C": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "TestChatStack:ExportsOutputRefChatConstructconnect4B5073AB960E50A6"
+    },
+    "Principal": {
+     "Fn::GetAtt": [
+      "SingletonFunction1488541a7b23466481b69b4408076b81Role37ABCE73",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "AwsApiCallDynamoDBgetItem9ee7d488ffee8644994907eaf6a3de59"
+   ]
+  },
+  "AwsApiCallDynamoDBgetItem9de2582b0c2494a6eead6a90d00f8061": {
+   "Type": "Custom::DeployAssert@SdkCallDynamoDBgetItem",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "SingletonFunction1488541a7b23466481b69b4408076b81HandlerCD40AE9F",
+      "Arn"
+     ]
+    },
+    "service": "DynamoDB",
+    "api": "getItem",
+    "expected": "{\"$ObjectLike\":{\"Item\":{\"connectionId\":{\"S\":\"test-conn-2-1758465913644\"}}}}",
+    "parameters": {
+     "TableName": {
+      "Fn::Join": [
+       "",
+       [
+        "\"",
+        {
+         "Fn::ImportValue": "TestChatStack:ExportsOutputRefChatConstructConnectionsTableC829605F00D02450"
+        },
+        "\""
+       ]
+      ]
+     },
+     "Key": "{\"connectionId\":{\"S\":\"test-conn-2-1758465913644\"}}",
+     "ConsistentRead": "true"
+    },
+    "flattenResponse": "false",
+    "salt": "1758465913659"
+   },
+   "DependsOn": [
+    "LambdaInvokef516de69dca2935de049b8b5cd679c62",
+    "LambdaInvokef516de69dca2935de049b8b5cd679c62Invoke79D2F13C"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "LambdaInvokeb3c56026271c051aa48efe5f3d5993e1": {
+   "Type": "Custom::DeployAssert@SdkCallLambdainvoke",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "SingletonFunction1488541a7b23466481b69b4408076b81HandlerCD40AE9F",
+      "Arn"
+     ]
+    },
+    "service": "Lambda",
+    "api": "invoke",
+    "expected": "{\"$ObjectLike\":{\"StatusCode\":200}}",
+    "parameters": {
+     "FunctionName": {
+      "Fn::Join": [
+       "",
+       [
+        "\"",
+        {
+         "Fn::ImportValue": "TestChatStack:ExportsOutputRefChatConstructsendmessage212CB28F5089776A"
+        },
+        "\""
+       ]
+      ]
+     },
+     "InvocationType": "\"RequestResponse\"",
+     "Payload": {
+      "Fn::Join": [
+       "",
+       [
+        "\"{\\\"body\\\":\\\"{\\\\\\\"action\\\\\\\":\\\\\\\"sendmessage\\\\\\\",\\\\\\\"message\\\\\\\":\\\\\\\"Hello, world!\\\\\\\"}\\\",\\\"requestContext\\\":{\\\"connectionId\\\":\\\"test-conn-1-1758465913644\\\",\\\"routeKey\\\":\\\"sendmessage\\\",\\\"apiId\\\":\\\"",
+        {
+         "Fn::ImportValue": "TestChatStack:ExportsOutputRefChatConstructChatApiE2093AA702D1F0DF"
+        },
+        "\\\",\\\"stage\\\":\\\"production\\\",\\\"domainName\\\":\\\"",
+        {
+         "Fn::ImportValue": "TestChatStack:ExportsOutputRefChatConstructChatApiE2093AA702D1F0DF"
+        },
+        ".execute-api.",
+        {
+         "Ref": "AWS::Region"
+        },
+        ".amazonaws.com\\\"}}\""
+       ]
+      ]
+     }
+    },
+    "flattenResponse": "false",
+    "salt": "1758465913659"
+   },
+   "DependsOn": [
+    "AwsApiCallDynamoDBgetItem9de2582b0c2494a6eead6a90d00f8061"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "LambdaInvokeb3c56026271c051aa48efe5f3d5993e1InvokeCAA7BF85": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "TestChatStack:ExportsOutputRefChatConstructsendmessage212CB28F5089776A"
+    },
+    "Principal": {
+     "Fn::GetAtt": [
+      "SingletonFunction1488541a7b23466481b69b4408076b81Role37ABCE73",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "AwsApiCallDynamoDBgetItem9de2582b0c2494a6eead6a90d00f8061"
+   ]
+  },
+  "LambdaInvokecaf0a18b5daaacf94ecf5b8db7991f22": {
+   "Type": "Custom::DeployAssert@SdkCallLambdainvoke",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "SingletonFunction1488541a7b23466481b69b4408076b81HandlerCD40AE9F",
+      "Arn"
+     ]
+    },
+    "service": "Lambda",
+    "api": "invoke",
+    "parameters": {
+     "FunctionName": {
+      "Fn::Join": [
+       "",
+       [
+        "\"",
+        {
+         "Fn::ImportValue": "TestChatStack:ExportsOutputRefChatConstructdisconnect68AF3F9B851D6E04"
+        },
+        "\""
+       ]
+      ]
+     },
+     "Payload": "\"{\\\"requestContext\\\":{\\\"connectionId\\\":\\\"test-conn-1-1758465913644\\\",\\\"routeKey\\\":\\\"$disconnect\\\"}}\""
+    },
+    "flattenResponse": "false",
+    "salt": "1758465913659"
+   },
+   "DependsOn": [
+    "LambdaInvokeb3c56026271c051aa48efe5f3d5993e1",
+    "LambdaInvokeb3c56026271c051aa48efe5f3d5993e1InvokeCAA7BF85"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "LambdaInvokecaf0a18b5daaacf94ecf5b8db7991f22Invoke124E6F3A": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "TestChatStack:ExportsOutputRefChatConstructdisconnect68AF3F9B851D6E04"
+    },
+    "Principal": {
+     "Fn::GetAtt": [
+      "SingletonFunction1488541a7b23466481b69b4408076b81Role37ABCE73",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "LambdaInvokeb3c56026271c051aa48efe5f3d5993e1",
+    "LambdaInvokeb3c56026271c051aa48efe5f3d5993e1InvokeCAA7BF85"
+   ]
+  },
+  "AwsApiCallDynamoDBgetItem9ee7d488ffee8644994907eaf6a3de591": {
+   "Type": "Custom::DeployAssert@SdkCallDynamoDBgetItem",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "SingletonFunction1488541a7b23466481b69b4408076b81HandlerCD40AE9F",
+      "Arn"
+     ]
+    },
+    "service": "DynamoDB",
+    "api": "getItem",
+    "expected": "{\"$ObjectLike\":{}}",
+    "parameters": {
+     "TableName": {
+      "Fn::Join": [
+       "",
+       [
+        "\"",
+        {
+         "Fn::ImportValue": "TestChatStack:ExportsOutputRefChatConstructConnectionsTableC829605F00D02450"
+        },
+        "\""
+       ]
+      ]
+     },
+     "Key": "{\"connectionId\":{\"S\":\"test-conn-1-1758465913644\"}}",
+     "ConsistentRead": "true"
+    },
+    "flattenResponse": "false",
+    "salt": "1758465913659"
+   },
+   "DependsOn": [
+    "LambdaInvokecaf0a18b5daaacf94ecf5b8db7991f22",
+    "LambdaInvokecaf0a18b5daaacf94ecf5b8db7991f22Invoke124E6F3A"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "LambdaInvoke032972b9aa9db75227b2244cbc3dfc6d": {
+   "Type": "Custom::DeployAssert@SdkCallLambdainvoke",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "SingletonFunction1488541a7b23466481b69b4408076b81HandlerCD40AE9F",
+      "Arn"
+     ]
+    },
+    "service": "Lambda",
+    "api": "invoke",
+    "parameters": {
+     "FunctionName": {
+      "Fn::Join": [
+       "",
+       [
+        "\"",
+        {
+         "Fn::ImportValue": "TestChatStack:ExportsOutputRefChatConstructdisconnect68AF3F9B851D6E04"
+        },
+        "\""
+       ]
+      ]
+     },
+     "Payload": "\"{\\\"requestContext\\\":{\\\"connectionId\\\":\\\"test-conn-2-1758465913644\\\",\\\"routeKey\\\":\\\"$disconnect\\\"}}\""
+    },
+    "flattenResponse": "false",
+    "salt": "1758465913660"
+   },
+   "DependsOn": [
+    "AwsApiCallDynamoDBgetItem9ee7d488ffee8644994907eaf6a3de591"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "LambdaInvoke032972b9aa9db75227b2244cbc3dfc6dInvoke2B44F3CD": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "TestChatStack:ExportsOutputRefChatConstructdisconnect68AF3F9B851D6E04"
+    },
+    "Principal": {
+     "Fn::GetAtt": [
+      "SingletonFunction1488541a7b23466481b69b4408076b81Role37ABCE73",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "AwsApiCallDynamoDBgetItem9ee7d488ffee8644994907eaf6a3de591"
+   ]
+  },
+  "AwsApiCallDynamoDBgetItem9de2582b0c2494a6eead6a90d00f80611": {
+   "Type": "Custom::DeployAssert@SdkCallDynamoDBgetItem",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "SingletonFunction1488541a7b23466481b69b4408076b81HandlerCD40AE9F",
+      "Arn"
+     ]
+    },
+    "service": "DynamoDB",
+    "api": "getItem",
+    "expected": "{\"$ObjectLike\":{}}",
+    "stateMachineArn": {
+     "Ref": "AwsApiCallDynamoDBgetItem9de2582b0c2494a6eead6a90d00f80611WaitFor6B9E7316"
+    },
+    "parameters": {
+     "TableName": {
+      "Fn::Join": [
+       "",
+       [
+        "\"",
+        {
+         "Fn::ImportValue": "TestChatStack:ExportsOutputRefChatConstructConnectionsTableC829605F00D02450"
+        },
+        "\""
+       ]
+      ]
+     },
+     "Key": "{\"connectionId\":{\"S\":\"test-conn-2-1758465913644\"}}",
+     "ConsistentRead": "true"
+    },
+    "flattenResponse": "false",
+    "salt": "1758465913660"
+   },
+   "DependsOn": [
+    "LambdaInvoke032972b9aa9db75227b2244cbc3dfc6d",
+    "LambdaInvoke032972b9aa9db75227b2244cbc3dfc6dInvoke2B44F3CD"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "AwsApiCallDynamoDBgetItem9de2582b0c2494a6eead6a90d00f80611WaitForIsCompleteProviderInvoke0BEAEF91": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SingletonFunction76b3e830a873425f8453eddd85c86925Handler81461ECE",
+      "Arn"
+     ]
+    },
+    "Principal": {
+     "Fn::GetAtt": [
+      "AwsApiCallDynamoDBgetItem9de2582b0c2494a6eead6a90d00f80611WaitForRole0F174043",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "LambdaInvoke032972b9aa9db75227b2244cbc3dfc6d",
+    "LambdaInvoke032972b9aa9db75227b2244cbc3dfc6dInvoke2B44F3CD"
+   ]
+  },
+  "AwsApiCallDynamoDBgetItem9de2582b0c2494a6eead6a90d00f80611WaitForTimeoutProviderInvokeE2C4EA80": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SingletonFunction5c1898e096fb4e3e95d5f6c67f3ce41aHandlerADF3E6EA",
+      "Arn"
+     ]
+    },
+    "Principal": {
+     "Fn::GetAtt": [
+      "AwsApiCallDynamoDBgetItem9de2582b0c2494a6eead6a90d00f80611WaitForRole0F174043",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "LambdaInvoke032972b9aa9db75227b2244cbc3dfc6d",
+    "LambdaInvoke032972b9aa9db75227b2244cbc3dfc6dInvoke2B44F3CD"
+   ]
+  },
+  "AwsApiCallDynamoDBgetItem9de2582b0c2494a6eead6a90d00f80611WaitForRole0F174043": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "states.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "Policies": [
+     {
+      "PolicyName": "InlineInvokeFunctions",
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Action": "lambda:InvokeFunction",
+         "Effect": "Allow",
+         "Resource": [
+          {
+           "Fn::GetAtt": [
+            "SingletonFunction76b3e830a873425f8453eddd85c86925Handler81461ECE",
+            "Arn"
+           ]
+          },
+          {
+           "Fn::GetAtt": [
+            "SingletonFunction5c1898e096fb4e3e95d5f6c67f3ce41aHandlerADF3E6EA",
+            "Arn"
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "DependsOn": [
+    "LambdaInvoke032972b9aa9db75227b2244cbc3dfc6d",
+    "LambdaInvoke032972b9aa9db75227b2244cbc3dfc6dInvoke2B44F3CD"
+   ]
+  },
+  "AwsApiCallDynamoDBgetItem9de2582b0c2494a6eead6a90d00f80611WaitFor6B9E7316": {
+   "Type": "AWS::StepFunctions::StateMachine",
+   "Properties": {
+    "DefinitionString": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"StartAt\":\"framework-isComplete-task\",\"States\":{\"framework-isComplete-task\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"States.ALL\"],\"IntervalSeconds\":5,\"MaxAttempts\":18,\"BackoffRate\":1}],\"Catch\":[{\"ErrorEquals\":[\"States.ALL\"],\"Next\":\"framework-onTimeout-task\"}],\"Type\":\"Task\",\"Resource\":\"",
+       {
+        "Fn::GetAtt": [
+         "SingletonFunction76b3e830a873425f8453eddd85c86925Handler81461ECE",
+         "Arn"
+        ]
+       },
+       "\"},\"framework-onTimeout-task\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"",
+       {
+        "Fn::GetAtt": [
+         "SingletonFunction5c1898e096fb4e3e95d5f6c67f3ce41aHandlerADF3E6EA",
+         "Arn"
+        ]
+       },
+       "\"}}}"
+      ]
+     ]
+    },
+    "RoleArn": {
+     "Fn::GetAtt": [
+      "AwsApiCallDynamoDBgetItem9de2582b0c2494a6eead6a90d00f80611WaitForRole0F174043",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "AwsApiCallDynamoDBgetItem9de2582b0c2494a6eead6a90d00f80611WaitForRole0F174043",
+    "LambdaInvoke032972b9aa9db75227b2244cbc3dfc6d",
+    "LambdaInvoke032972b9aa9db75227b2244cbc3dfc6dInvoke2B44F3CD"
+   ]
+  },
+  "SingletonFunction76b3e830a873425f8453eddd85c86925Role918961BB": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ],
+    "Policies": [
+     {
+      "PolicyName": "Inline",
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Action": [
+          "dynamodb:GetItem"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+          "*"
+         ]
+        }
+       ]
+      }
+     }
+    ]
+   }
+  },
+  "SingletonFunction76b3e830a873425f8453eddd85c86925Handler81461ECE": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Runtime": "nodejs22.x",
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "4e818c462cf84c112f84262d376efd099d66da03f7a2aabae64c50c0511de276.zip"
+    },
+    "Timeout": 120,
+    "Handler": "index.isComplete",
+    "Role": {
+     "Fn::GetAtt": [
+      "SingletonFunction76b3e830a873425f8453eddd85c86925Role918961BB",
+      "Arn"
+     ]
+    }
+   }
+  },
+  "SingletonFunction5c1898e096fb4e3e95d5f6c67f3ce41aRoleB84BD8CE": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ]
+   }
+  },
+  "SingletonFunction5c1898e096fb4e3e95d5f6c67f3ce41aHandlerADF3E6EA": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Runtime": "nodejs22.x",
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "4e818c462cf84c112f84262d376efd099d66da03f7a2aabae64c50c0511de276.zip"
+    },
+    "Timeout": 120,
+    "Handler": "index.onTimeout",
+    "Role": {
+     "Fn::GetAtt": [
+      "SingletonFunction5c1898e096fb4e3e95d5f6c67f3ce41aRoleB84BD8CE",
+      "Arn"
+     ]
+    }
+   }
+  }
+ },
+ "Outputs": {
+  "AssertionResultsAwsApiCallDynamoDBgetItem9ee7d488ffee8644994907eaf6a3de59": {
+   "Value": {
+    "Fn::GetAtt": [
+     "AwsApiCallDynamoDBgetItem9ee7d488ffee8644994907eaf6a3de59",
+     "assertion"
+    ]
+   }
+  },
+  "AssertionResultsAwsApiCallDynamoDBgetItem9de2582b0c2494a6eead6a90d00f8061": {
+   "Value": {
+    "Fn::GetAtt": [
+     "AwsApiCallDynamoDBgetItem9de2582b0c2494a6eead6a90d00f8061",
+     "assertion"
+    ]
+   }
+  },
+  "AssertionResultsLambdaInvokeb3c56026271c051aa48efe5f3d5993e1": {
+   "Value": {
+    "Fn::GetAtt": [
+     "LambdaInvokeb3c56026271c051aa48efe5f3d5993e1",
+     "assertion"
+    ]
+   }
+  },
+  "AssertionResultsAwsApiCallDynamoDBgetItem9ee7d488ffee8644994907eaf6a3de591": {
+   "Value": {
+    "Fn::GetAtt": [
+     "AwsApiCallDynamoDBgetItem9ee7d488ffee8644994907eaf6a3de591",
+     "assertion"
+    ]
+   }
+  },
+  "AssertionResultsAwsApiCallDynamoDBgetItem9de2582b0c2494a6eead6a90d00f80611": {
+   "Value": {
+    "Fn::GetAtt": [
+     "AwsApiCallDynamoDBgetItem9de2582b0c2494a6eead6a90d00f80611",
+     "assertion"
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

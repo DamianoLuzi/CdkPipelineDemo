@@ -1,0 +1,62 @@
+{
+  "version": "48.0.0",
+  "files": {
+    "9787502bd3ebea7d37de8028076646129a88189f71543d82df9fdb62f16f33f5": {
+      "displayName": "ChatConstruct/connect/Code",
+      "source": {
+        "path": "asset.9787502bd3ebea7d37de8028076646129a88189f71543d82df9fdb62f16f33f5",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "current_account-current_region-8cfd59b1": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "9787502bd3ebea7d37de8028076646129a88189f71543d82df9fdb62f16f33f5.zip",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    },
+    "72107e80c1d7a442516e280e21a07f04cb51e5b60f7532de01bb6ecf24a2c847": {
+      "displayName": "ChatConstruct/sendmessage/Code",
+      "source": {
+        "path": "asset.72107e80c1d7a442516e280e21a07f04cb51e5b60f7532de01bb6ecf24a2c847",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "current_account-current_region-da8ddb25": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "72107e80c1d7a442516e280e21a07f04cb51e5b60f7532de01bb6ecf24a2c847.zip",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    },
+    "83296e004ee273bd43dd9675bb8dd0f48cb6f1731371fe131789c71a3f19f55d": {
+      "displayName": "ChatConstruct/disconnect/Code",
+      "source": {
+        "path": "asset.83296e004ee273bd43dd9675bb8dd0f48cb6f1731371fe131789c71a3f19f55d",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "current_account-current_region-c5ebad77": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "83296e004ee273bd43dd9675bb8dd0f48cb6f1731371fe131789c71a3f19f55d.zip",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    },
+    "35ca31e0f08499832200c6c9dfc110f1cd1656037583e2dd7e5e24f60641a9b1": {
+      "displayName": "TestChatStack Template",
+      "source": {
+        "path": "TestChatStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region-5ae6c0ce": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "35ca31e0f08499832200c6c9dfc110f1cd1656037583e2dd7e5e24f60641a9b1.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
