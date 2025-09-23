@@ -6,3 +6,12 @@ node_modules
 # CDK asset staging directory
 .cdk.staging
 cdk.out
+
+!canary-script.js
+!canary/nodejs/*.js 
+!canary/*.js
+!canary/
+canary/*
+!canary/nodejs/
+canary/nodejs/*
+!canary/nodejs/node_modules/

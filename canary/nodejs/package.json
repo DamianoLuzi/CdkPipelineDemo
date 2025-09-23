@@ -1,0 +1,9 @@
+{
+  "name": "websocket-canary",
+  "version": "1.0.0",
+  "description": "WebSocket Canary for CloudWatch Synthetics",
+  "main": "node_modules/canary-script.js",
+  "dependencies": {
+    "ws": "^8.18.3"
+  }
+}

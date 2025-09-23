@@ -1,15 +1,8 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelines';
-import { PipelineStage } from './pipeline-stage';
-import { AppStack } from './application-stack';
-import * as synthetics from 'aws-cdk-lib/aws-synthetics';
-import * as s3 from 'aws-cdk-lib/aws-s3';
-import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch'
-import * as sns from 'aws-cdk-lib/aws-sns';
-import * as subscriptions from 'aws-cdk-lib/aws-sns-subscriptions';
-import * as actions from 'aws-cdk-lib/aws-cloudwatch-actions';
-import path from 'path';
+import { PipelineStage, ProdStage } from './pipeline-stage';
+import { CanaryStack } from './canary-stack';
 
 export class CdkPipelineStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -66,13 +59,14 @@ export class CdkPipelineStack extends cdk.Stack {
       ],
     });
 
-    // const prodStage = new PipelineStage(this, 'PROD', {
-    //   env: { account: '410431259391', region: 'eu-south-1' }
-    // });
+    const prodStage = new ProdStage(this, 'PROD', {
+      env: { account: '410431259391', region: 'eu-south-1' }
+    });
 
-    // pipeline.addStage(prodStage, {
+    pipeline.addStage(prodStage,
+    //    {
     //   post: [
-    //     new ShellStep('RunPostDeployTests', {
+    //     new ShellStep('RunSmokeTests', {
     //       commands: [
     //         'npm ci',
     //         `npx ts-node test/test.websocket.ts $CHAT_API_URL "test message" || exit 1`,
@@ -80,14 +74,15 @@ export class CdkPipelineStack extends cdk.Stack {
     //       envFromCfnOutputs: { CHAT_API_URL: prodStage.appUrlOutput }
     //     }),
     //   ],
-    // });
+    // }
+  );
 
     // const prodCanary = new synthetics.Canary(this, 'ProdWebSocketCanary', {
     //   canaryName: 'prod-websocket-canary',
     //   runtime: synthetics.Runtime.SYNTHETICS_NODEJS_PUPPETEER_6_2,
     //   test: synthetics.Test.custom({
-    //     code: synthetics.Code.fromAsset(path.join(__dirname, '..','canary')),
-    //     handler: 'index.handler',
+    //     code: synthetics.Code.fromAsset(path.join(__dirname, '..','canary/')),
+    //     handler: 'nodejs/node_modules/canary/index.handler',
     //   }),
     //   schedule: synthetics.Schedule.rate(cdk.Duration.minutes(5)),
     //   environmentVariables: { 
