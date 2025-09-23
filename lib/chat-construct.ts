@@ -16,17 +16,16 @@ export class CdkChatConstruct extends Construct {
     public readonly connectLambda: lambda.Function;
     public readonly disconnectLambda: lambda.Function;
 
-    constructor(scope: Construct, id: string /*, props: CdkChatConstructProps*/) {
+    constructor(scope: Construct, id: string) {
         super(scope, id);
-        const stageId = scope.node.root.node.id; // This will be 'DEV', 'STG', etc.
-        const stageName = stageId.toLowerCase(); // Convert to 'dev', 'stg', etc.
+        const stageId = scope.node.root.node.id;
+        const stageName = stageId.toLowerCase();
         
         console.log('Stage ID:', stageId);
         console.log('Stage Name:', stageName);
         this.table = new dynamodb.Table(this, 'ConnectionsTable', {
             partitionKey: { name: 'connectionId', type: dynamodb.AttributeType.STRING },
             removalPolicy: stageName == 'prod' ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
-            //stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,
         });
 
         const makeLambda = (id: string, timeoutSec: number) => {

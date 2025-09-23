@@ -49,8 +49,6 @@ export class CdkPipelineStack extends cdk.Stack {
             'echo "Testing WebSocket API..."',
             `npx ts-node test/test.websocket.ts $CHAT_API_URL "test message"|| exit 1`,
             'npm run integ',
-            // Test with the "bug" message to simulate failure
-            // `npx ts-node test/test.websocket.ts $CHAT_API_URL "fail"|| exit 1`
           ],
           envFromCfnOutputs: {
             CHAT_API_URL: stgStage.appUrlOutput
@@ -63,45 +61,7 @@ export class CdkPipelineStack extends cdk.Stack {
       env: { account: '410431259391', region: 'eu-south-1' }
     });
 
-    pipeline.addStage(prodStage,
-    //    {
-    //   post: [
-    //     new ShellStep('RunSmokeTests', {
-    //       commands: [
-    //         'npm ci',
-    //         `npx ts-node test/test.websocket.ts $CHAT_API_URL "test message" || exit 1`,
-    //       ],
-    //       envFromCfnOutputs: { CHAT_API_URL: prodStage.appUrlOutput }
-    //     }),
-    //   ],
-    // }
-  );
-
-    // const prodCanary = new synthetics.Canary(this, 'ProdWebSocketCanary', {
-    //   canaryName: 'prod-websocket-canary',
-    //   runtime: synthetics.Runtime.SYNTHETICS_NODEJS_PUPPETEER_6_2,
-    //   test: synthetics.Test.custom({
-    //     code: synthetics.Code.fromAsset(path.join(__dirname, '..','canary/')),
-    //     handler: 'nodejs/node_modules/canary/index.handler',
-    //   }),
-    //   schedule: synthetics.Schedule.rate(cdk.Duration.minutes(5)),
-    //   environmentVariables: { 
-    //     CHAT_API_URL: prodStage.appUrlOutput.toString(),
-    //     TEST_MESSAGE: 'broadcast-test',
-    //    },
-    // });
-
-    // const prodCanaryAlarm = new cloudwatch.Alarm(this, 'ProdCanaryAlarm', {
-    //   metric: prodCanary.metricSuccessPercent(),
-    //   threshold: 90,
-    //   evaluationPeriods: 1,
-    //   comparisonOperator: cloudwatch.ComparisonOperator.LESS_THAN_THRESHOLD,
-    //   alarmDescription: 'Production WebSocket Canary Alarm',
-    // });
-    // const prodSnsTopic = new sns.Topic(this, 'ProdCanarySnsTopic');
-    // prodSnsTopic.addSubscription(new subscriptions.EmailSubscription('luzi.dami03@gmail.com'));
-
-    // prodCanaryAlarm.addAlarmAction(new actions.SnsAction(prodSnsTopic));
+    pipeline.addStage(prodStage);
 
   }
 }

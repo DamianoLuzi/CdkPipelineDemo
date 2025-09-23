@@ -4,6 +4,9 @@ import * as synthetics from 'aws-cdk-lib/aws-synthetics';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as path from 'path';
 import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
+import * as sns from 'aws-cdk-lib/aws-sns';
+import * as subs from 'aws-cdk-lib/aws-sns-subscriptions';
 
 interface CanaryStackProps extends cdk.StackProps {
   websocketUrl: string;
@@ -44,8 +47,8 @@ export class CanaryStack extends cdk.Stack {
     artifactsBucket.grantRead(canaryRole);
 
     console.log(path.join(__dirname,'..','canary'))
-    new synthetics.Canary(this, 'WebSocketCanary', {
-      canaryName: 'wscanarymonitor',
+    const canary = new synthetics.Canary(this, 'ChatApiCanary', {
+      canaryName: 'wsmonitorcanary',
       runtime: synthetics.Runtime.SYNTHETICS_NODEJS_PUPPETEER_6_2,
       role: canaryRole,
       test: synthetics.Test.custom({
@@ -56,11 +59,73 @@ export class CanaryStack extends cdk.Stack {
       timeout: cdk.Duration.minutes(1),
       environmentVariables: {
         CHAT_API_URL: props.websocketUrl,
-        TEST_MESSAGE: 'broadcast-test',
+        TEST_MESSAGE: 'canary test message',
       },
       artifactsBucketLocation: {
         bucket: artifactsBucket,
       },
+    });
+
+    const dashboard = new cloudwatch.Dashboard(this, 'CanaryDashboard', {
+      dashboardName: 'ChatCanaryDashboard',
+    });
+
+    const successMetric = canary.metricSuccessPercent();
+    const durationMetric = canary.metricDuration();
+    const failedMetric = canary.metricFailed();
+
+    dashboard.addWidgets(
+      new cloudwatch.GraphWidget({
+        title: 'Success Rate (%)',
+        left: [successMetric],
+      }),
+      new cloudwatch.GraphWidget({
+        title: 'Failures',
+        left: [failedMetric],
+      }),
+      new cloudwatch.GraphWidget({
+        title: 'Duration (ms)',
+        left: [durationMetric],
+      }),
+    );
+
+    const alarmTopic = new sns.Topic(this, 'CanaryAlarmTopic', {
+      displayName: 'Chat Api Canary Alarms',
+    });
+    alarmTopic.addSubscription(
+      new subs.EmailSubscription('luzi.dami03@gmail.com')
+    );
+
+    new cloudwatch.Alarm(this, 'CanarySuccessAlarm', {
+      metric: successMetric,
+      threshold: 90,
+      evaluationPeriods: 3,
+      comparisonOperator: cloudwatch.ComparisonOperator.LESS_THAN_THRESHOLD,
+      datapointsToAlarm: 2,
+      treatMissingData: cloudwatch.TreatMissingData.BREACHING,
+      alarmDescription: 'Canary success rate below 90%',
+    }).addAlarmAction({
+      bind: () => ({ alarmActionArn: alarmTopic.topicArn }),
+    });
+
+    new cloudwatch.Alarm(this, 'CanaryFailureAlarm', {
+      metric: failedMetric,
+      threshold: 1,
+      evaluationPeriods: 3,
+      comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
+      alarmDescription: 'Canary detected failures',
+    }).addAlarmAction({
+      bind: () => ({ alarmActionArn: alarmTopic.topicArn }),
+    });
+
+    new cloudwatch.Alarm(this, 'CanaryDurationAlarm', {
+      metric: durationMetric,
+      threshold: 10000,
+      evaluationPeriods: 1,
+      comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
+      alarmDescription: 'Canary execution duration exceeded 10 seconds',
+    }).addAlarmAction({
+      bind: () => ({ alarmActionArn: alarmTopic.topicArn }),
     });
   }
 }
