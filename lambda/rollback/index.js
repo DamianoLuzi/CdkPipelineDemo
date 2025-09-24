@@ -1,13 +1,15 @@
-import { 
-  CodePipelineClient, 
-  ListPipelineExecutionsCommand, 
-  GetPipelineExecutionCommand, 
-  RollbackStageCommand 
-} from "@aws-sdk/client-codepipeline";
+// import { 
+//   CodePipelineClient, 
+//   ListPipelineExecutionsCommand, 
+//   GetPipelineExecutionCommand, 
+//   RollbackStageCommand 
+// } from "@aws-sdk/client-codepipeline";
+// 
+const { CodePipelineClient, ListPipelineExecutionsCommand, RollbackStageCommand } = require("@aws-sdk/client-codepipeline");
 
 const client = new CodePipelineClient({ region: process.env.REGION });
 
-export const handler = async (event) => {
+exports.handler = async (event) => {
   console.log("Alarm event received:", JSON.stringify(event));
 
   const pipelineName = process.env.PIPELINE_NAME;

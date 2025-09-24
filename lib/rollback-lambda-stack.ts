@@ -4,6 +4,7 @@ import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as sns from "aws-cdk-lib/aws-sns";
 import * as subs from "aws-cdk-lib/aws-sns-subscriptions";
 import * as iam from "aws-cdk-lib/aws-iam";
+import path from "path";
 
 interface RollbackLambdaStackProps extends cdk.StackProps {
   alarmTopicArn: string;
@@ -18,9 +19,9 @@ export class RollbackLambdaStack extends cdk.Stack {
     super(scope, id, props);
 
     const rollbackLambda = new lambda.Function(this, "RollbackLambda", {
-      runtime: lambda.Runtime.NODEJS_20_X,
+      runtime: lambda.Runtime.NODEJS_22_X,
       handler: "index.handler",
-      code: lambda.Code.fromAsset("lambda/rollback"),
+      code: lambda.Code.fromAsset(path.join(__dirname, "../lambda/rollback")),
       environment: {
         PIPELINE_NAME: props.pipelineName,
         STAGE_NAME: props.stageName,
