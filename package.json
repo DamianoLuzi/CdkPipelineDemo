@@ -25,6 +25,7 @@
     "@aws-cdk/assertions": "^1.203.0",
     "@aws-cdk/integ-runner": "^2.190.6",
     "@aws-cdk/integ-tests-alpha": "^2.214.0-alpha.0",
+    "@aws-sdk/client-codepipeline": "^3.894.0",
     "aws-cdk-lib": "^2.214.0",
     "constructs": "^10.0.0",
     "ws": "^8.18.3"

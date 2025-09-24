@@ -2,7 +2,7 @@ import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelines';
 import { PipelineStage, ProdStage } from './pipeline-stage';
-import { CanaryStack } from './canary-stack';
+import { RollbackLambdaStack } from './rollback-lambda-stack';
 
 export class CdkPipelineStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -62,6 +62,15 @@ export class CdkPipelineStack extends cdk.Stack {
     });
 
     pipeline.addStage(prodStage);
+
+    new RollbackLambdaStack(this, 'RollbackLambdaStack', {
+      env: { account: '718579638605', region: 'us-east-1' },
+      alarmTopicArn: prodStage.canaryStack.alarmTopic.topicArn,
+      pipelineName: 'DemoCodePipeline',
+      stageName: 'PROD',
+      targetAccount: '718579638605',
+      region: 'us-east-1',
+    });
 
   }
 }
