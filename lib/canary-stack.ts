@@ -95,14 +95,7 @@ export class CanaryStack extends cdk.Stack {
       displayName: 'Chat Api Canary Alarms',
       topicName: 'ChatApiCanaryAlarmTopic',
     });
-    // alarmTopic.addToResourcePolicy(new iam.PolicyStatement({
-    //     effect: iam.Effect.ALLOW,
-    //     principals: [
-    //         new iam.ArnPrincipal('arn:aws:iam::718579638605:role/cdk-hnb659fds-cfn-exec-role-718579638605-us-east-1/AWSCloudFormation')
-    //     ],
-    //     actions: ['SNS:Subscribe'],
-    //     resources: [alarmTopic.topicArn],
-    // }));
+    
     alarmTopic.addToResourcePolicy(new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
         principals: [new iam.AccountPrincipal('718579638605')],
@@ -145,9 +138,6 @@ export class CanaryStack extends cdk.Stack {
       comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
       alarmDescription: 'Canary detected failures',
     }).addAlarmAction(new actions.SnsAction(this.alarmTopic));
-    // .addAlarmAction({
-    //   bind: () => ({ alarmActionArn: alarmTopic.topicArn }),
-    // });
 
     new cloudwatch.Alarm(this, 'CanaryDurationAlarm', {
       metric: durationMetric,
@@ -156,9 +146,6 @@ export class CanaryStack extends cdk.Stack {
       comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
       alarmDescription: 'Canary execution duration exceeded 10 seconds',
     }).addAlarmAction(new actions.SnsAction(this.alarmTopic));
-    // .addAlarmAction({
-    //   bind: () => ({ alarmActionArn: alarmTopic.topicArn }),
-    // });
 
     new cdk.CfnOutput(this, 'AlarmTopicArnOutput', {
       value: alarmTopic.topicArn,

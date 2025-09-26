@@ -47,7 +47,7 @@ export class CdkPipelineStack extends cdk.Stack {
           commands: [
             'npm ci',
             'echo "Testing WebSocket API..."',
-            `npx ts-node test/test.websocket.ts $CHAT_API_URL "test message"|| exit 1`,
+            `npx ts-node test/test.websocket.ts $CHAT_API_URL "test message" || exit 1`,
             'npm run integ',
           ],
           envFromCfnOutputs: {
@@ -63,14 +63,14 @@ export class CdkPipelineStack extends cdk.Stack {
 
     pipeline.addStage(prodStage);
 
-    new RollbackLambdaStack(this, 'RollbackLambdaStack', {
-      env: { account: '718579638605', region: 'us-east-1' },
-      alarmTopicArn: prodStage.canaryStack.alarmTopic.topicArn,
-      pipelineName: 'DemoCodePipeline',
-      stageName: 'PROD',
-      targetAccount: '718579638605',
-      region: 'us-east-1',
-    });
+    // new RollbackLambdaStack(this, 'RollbackLambdaStack', {
+    //   env: { account: '718579638605', region: 'us-east-1' },
+    //   alarmTopicArn: prodStage.canaryStack.alarmTopic.topicArn,
+    //   pipelineName: 'DemoCodePipeline',
+    //   stageName: 'PROD',
+    //   targetAccount: '718579638605',
+    //   region: 'us-east-1',
+    // });
 
   }
 }
